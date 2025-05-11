@@ -46,6 +46,7 @@ void resetButtonCheck() {
 void networkInit(void (*notify)(int), Scheduler* runner, int reset_button_pin_P) {
   preferences.begin("wifi-conf", false); 
   pinMode(reset_button_pin_P, INPUT_PULLUP);
+  reset_button_pin = reset_button_pin_P;
   if (!checkConnectFlag()) {
     WiFi.mode(WIFI_AP_STA);
     WiFi.beginSmartConfig(SC_TYPE_ESPTOUCH_AIRKISS);
@@ -56,7 +57,6 @@ void networkInit(void (*notify)(int), Scheduler* runner, int reset_button_pin_P)
     writeConnectFlag(true);
     savePassword();
     (*notify)(CONFIG_FINISH);
-    reset_button_pin = reset_button_pin_P;
   }
 
   if (WiFi.status() != WL_CONNECTED) {
